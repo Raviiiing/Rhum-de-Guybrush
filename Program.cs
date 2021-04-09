@@ -8,6 +8,7 @@ namespace PROJET_CSHARP
         {
             Console.Write("Test2");
             int test = Convert.ToInt32(Console.ReadLine());
+            float teseft;
         }
     }
 }
