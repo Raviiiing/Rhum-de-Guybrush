@@ -6,7 +6,7 @@ namespace PROJET_CSHARP
 {
     class CodageCarte
     {
-        public CodageCarte(Carte carte)
+        public CodageCarte(CarteDecodee carte)
         {
             //97 et 122
 
