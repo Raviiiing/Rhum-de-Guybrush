@@ -12,7 +12,7 @@ namespace PROJET_CSHARP
             float teseft;
 
             Console.Write("Test6");
-
+            Console.Write("aefafz");
         }
     }
 }
