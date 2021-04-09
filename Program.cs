@@ -11,6 +11,8 @@ namespace PROJET_CSHARP
             int test = Convert.ToInt32(Console.ReadLine());
 
             Console.Write("Test6");
+            Console.Write("aefafz");
+
         }
     }
 }
