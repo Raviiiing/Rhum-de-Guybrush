@@ -6,7 +6,7 @@ namespace PROJET_CSHARP
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Test Paul 4");
+            string coucou = "test";
         }
     }
 }
