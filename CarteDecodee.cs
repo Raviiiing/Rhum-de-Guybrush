@@ -7,12 +7,15 @@ namespace PROJET_CSHARP
 {
     class CarteDecodee
     {
+        private string fichierPath;
         private char[,] cartes = new char[10, 10];
         public char[,] GetCartes { get => cartes; }
+        public string GetFichierPath { get => fichierPath; }
 
         public CarteDecodee(string accesFichier)
         {
             string str;
+            this.fichierPath = accesFichier;
             int x = 0;
             int y = 0;
             try

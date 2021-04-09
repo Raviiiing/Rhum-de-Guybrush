@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace PROJET_CSHARP 
 {
     class CodageCarte
     {
+        private CarteDecodee carteADecodee;
         private char[,] carteCopy;
-        private int[,] cartesCode = new int[10, 10];
+        string carteUneFoisCodee;
 
         public CodageCarte(CarteDecodee carte)
         {
-            carteCopy = carte.GetCartes;
+            this.carteADecodee = carte;
+            this.carteCopy = carte.GetCartes;
         }
 
-        public int[,] CodageDeLaCarte()
+        public string CodageDeLaCarte()
         {
             int x, y;
             for (x = 0; x < 10; x++)
@@ -51,10 +54,38 @@ namespace PROJET_CSHARP
                     else if (carteCopy[x,y] == 77)
                         valeur += 64;
 
-                    Console.WriteLine(valeur);
+                    carteUneFoisCodee = carteUneFoisCodee + valeur;
+                    if(y == 9)
+                        carteUneFoisCodee = carteUneFoisCodee + '|';
+                    else
+                        carteUneFoisCodee = carteUneFoisCodee + ':';
                 }
             }
-            return cartesCode;
+            return carteUneFoisCodee;
+        }
+
+        public void creerFichier()
+        {
+            try
+            {
+                string pathDossier = carteADecodee.GetFichierPath.Remove(carteADecodee.GetFichierPath.LastIndexOf("/") + 1);
+                string nomFichier = Path.GetFileName(carteADecodee.GetFichierPath);
+                string nomFichierSansExtension = nomFichier.Remove(nomFichier.LastIndexOf(".") + 1);
+
+                using(StreamWriter streamWriter = File.AppendText(@pathDossier + "/" + nomFichierSansExtension + "chiffre"))
+                {
+                    streamWriter.WriteLine(carteUneFoisCodee);
+                    streamWriter.Close();
+                }
+
+                Console.WriteLine("Le fichier {0}chiffre à été créé", nomFichierSansExtension);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Chemin de fichier introuvable : erreur");
+                return;
+            }
         }
     }
 }
