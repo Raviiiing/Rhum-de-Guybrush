@@ -6,7 +6,7 @@ namespace PROJET_CSHARP
     {
         static void Main(string[] args)
         {
-            int test = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Test Paul 4");
         }
     }
 }
