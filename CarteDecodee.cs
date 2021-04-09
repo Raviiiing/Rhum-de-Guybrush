@@ -30,7 +30,7 @@ namespace PROJET_CSHARP
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
                 return;
             }
         }
@@ -41,10 +41,17 @@ namespace PROJET_CSHARP
             {
                 for (y = 0; y < 10; y++)
                 {
+                    if(cartes[x, y]== 'M')
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    if (cartes[x, y] == 'F')
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    else
+                        Console.ForegroundColor = ConsoleColor.White;
                     Console.Write("{0} ", cartes[x, y]);
                 }
                 Console.WriteLine("");
             }
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
