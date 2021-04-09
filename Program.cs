@@ -8,7 +8,6 @@ namespace PROJET_CSHARP
         {
             CarteDecodee laCarte = new CarteDecodee(@"../../../Cartes/Scabb.clair");
             CodageCarte codageCarte = new CodageCarte(laCarte);
-            codageCarte.codage();
         }
     }
 }
