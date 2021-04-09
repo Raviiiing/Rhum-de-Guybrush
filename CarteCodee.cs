@@ -8,6 +8,9 @@ namespace PROJET_CSHARP
     class CarteCodee
     {
         private int[,] cartesCode = new int[10, 10];
+
+        public int[,] GetCarteCodee { get => cartesCode; }
+
         public CarteCodee(string cheminAcces)
         {
             string str;

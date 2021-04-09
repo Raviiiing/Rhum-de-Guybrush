@@ -7,7 +7,7 @@ namespace PROJET_CSHARP
         static void Main(string[] args)
         {
             CarteDecodee laCarte = new CarteDecodee(@"../../../Cartes/Scabb.clair");
-            laCarte.Affiche();
+            CodageCarte codageCarte = new CodageCarte(laCarte);
         }
     }
 }

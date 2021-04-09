@@ -8,6 +8,8 @@ namespace PROJET_CSHARP
     class CarteDecodee
     {
         private char[,] cartes = new char[10, 10];
+        public char[,] GetCartes { get => cartes; }
+
         public CarteDecodee(string accesFichier)
         {
             string str;
@@ -34,6 +36,7 @@ namespace PROJET_CSHARP
                 return;
             }
         }
+
         public void Affiche()
         {
             int x, y;
