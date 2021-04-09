@@ -8,6 +8,8 @@ namespace PROJET_CSHARP
     class CarteDecodee
     {
         private char[,] cartes = new char[10, 10];
+        public char[,] GetCartes { get => cartes; }
+
         public CarteDecodee(string accesFichier)
         {
             string str;
@@ -30,10 +32,11 @@ namespace PROJET_CSHARP
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
                 return;
             }
         }
+
         public void Affiche()
         {
             int x, y;
@@ -41,10 +44,17 @@ namespace PROJET_CSHARP
             {
                 for (y = 0; y < 10; y++)
                 {
+                    if (cartes[x, y] == 'M')
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    else if (cartes[x, y] == 'F')
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    else
+                        Console.ForegroundColor = ConsoleColor.White;
                     Console.Write("{0} ", cartes[x, y]);
                 }
                 Console.WriteLine("");
             }
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

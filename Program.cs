@@ -6,7 +6,9 @@ namespace PROJET_CSHARP
     {
         static void Main(string[] args)
         {
-            CarteDecodee laCarte = new CarteDecodee(@"C:\Users\Yann\OneDrive\IUT\Semestre 2\C#\PROJET\Projet\PROJET_CSHARP\Cartes\Scabb.chiffre");
+            CarteDecodee laCarte = new CarteDecodee(@"../../../Cartes/Scabb.clair");
+            CodageCarte codageCarte = new CodageCarte(laCarte);
+            codageCarte.codage();
         }
     }
 }
