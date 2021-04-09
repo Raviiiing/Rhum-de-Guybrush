@@ -76,7 +76,7 @@ namespace PROJET_CSHARP
             }
         }
 
-        public void parcelles()
+        public void Parcelles()
         {
             foreach (KeyValuePair<char, List<string>> tab in parcelle)
             {
