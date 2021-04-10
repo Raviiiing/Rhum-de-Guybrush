@@ -6,11 +6,17 @@ namespace PROJET_CSHARP
     {
         static void Main(string[] args)
         {
-            CarteDecodee laCarte = new CarteDecodee(@"../../../Cartes/ScabbTest.clair");
+            DecodageCarte lacarte = new DecodageCarte(@"../../../Cartes/Phatt.chiffre");
+            lacarte.DecodageDeLaCarte();
+            lacarte.Affiche();
+            lacarte.AireMoyenne();
+            lacarte.Parcelles();
+            lacarte.TailleSupp(4);
+            lacarte.TailleParcelle('a');
 
-            CodageCarte codageCarte = new CodageCarte(laCarte);
-            codageCarte.CodageDeLaCarte();
-            codageCarte.creerFichier();
+            CodageCarte nouvcarte = new CodageCarte(@"../../../Cartes/Scabb.clair");
+            nouvcarte.CodageDeLaCarte();
+            nouvcarte.creerFichier();
         }
     }
 }

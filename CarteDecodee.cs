@@ -10,8 +10,6 @@ namespace PROJET_CSHARP
         private string fichierPath;
         private char[,] cartes = new char[10, 10];
         private Dictionary<char, List<string>> parcelle = new Dictionary<char, List<string>>();
-        public char[,] GetCartes { get => cartes; }
-        public string GetFichierPath { get => fichierPath; }
 
         public CarteDecodee(string accesFichier)
         {

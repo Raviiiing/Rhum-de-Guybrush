@@ -7,14 +7,35 @@ namespace PROJET_CSHARP
 {
     class CodageCarte
     {
-        private CarteDecodee carteADecodee;
-        private char[,] carteCopy;
-        string carteUneFoisCodee;
-
-        public CodageCarte(CarteDecodee carte)
+        private char[,] carteCopy = new char[10,10];
+        private string carteUneFoisCodee;
+        private string fichierPath;
+        public CodageCarte(string accesFichier)
         {
-            this.carteADecodee = carte;
-            this.carteCopy = carte.GetCartes;
+            string str;
+            this.fichierPath = accesFichier;
+            int x = 0;
+            int y = 0;
+            try
+            {
+                StreamReader file = new StreamReader(accesFichier);
+                while ((str = file.ReadLine()) != null)
+                {
+                    foreach (char c in str)
+                    {
+                        carteCopy[x, y] = c;
+                        y++;
+                    }
+                    x++;
+                    y = 0;
+                }
+                file.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return;
+            }
         }
 
         public string CodageDeLaCarte()
@@ -68,11 +89,11 @@ namespace PROJET_CSHARP
         {
             try
             {
-                string pathDossier = carteADecodee.GetFichierPath.Remove(carteADecodee.GetFichierPath.LastIndexOf("/") + 1);
-                string nomFichier = Path.GetFileName(carteADecodee.GetFichierPath);
+                string pathDossier = this.fichierPath.Remove(this.fichierPath.LastIndexOf("/") + 1);
+                string nomFichier = Path.GetFileName(this.fichierPath);
                 string nomFichierSansExtension = nomFichier.Remove(nomFichier.LastIndexOf(".") + 1);
-
-                using(StreamWriter streamWriter = File.AppendText(@pathDossier + "/" + nomFichierSansExtension + "chiffre"))
+                Console.WriteLine(pathDossier + nomFichierSansExtension + "chiffre");
+                using(StreamWriter streamWriter = File.AppendText(@pathDossier + nomFichierSansExtension + "chiffre"))
                 {
                     streamWriter.WriteLine(carteUneFoisCodee);
                     streamWriter.Close();
