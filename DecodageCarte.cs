@@ -51,29 +51,35 @@ namespace PROJET_CSHARP
             int y = 0;
             char lettreTerrain = 'a';
             bool frontiereNord;
-            bool frontiereOuest;
             bool frontiereEst;
             for (x = 0; x < 10; x++)
             {
+
+
+                List<string> charAEcrire = new List<string>();
+                bool valeurTempo = false;
+                char valeurEnAttente = lettreTerrain;
+
                 for (y = 0; y < 10; y++)
                 {
                     // Terrain
                     if (carteDecodeCopy[x, y] >= 0 && carteDecodeCopy[x, y] <= 15)
                     {
                         int valeur = carteDecodeCopy[x, y];
-                        List<int> puissance = new List<int>();
                         List<int> calculePuissance = new List<int>();
+
                         for (int i = 0; i < 4; i++)
                         {
-                            //puissance.Add(valeur % 2);
                             if (valeur % 2 == 1)
                                 calculePuissance.Add((int)System.Math.Pow(2, i));
 
                             valeur = valeur / 2;
                         }
+
                         frontiereNord = false;
-                        frontiereOuest = false;
                         frontiereEst= false;
+                        
+
                         if (calculePuissance.Count != 0)
                         {
                             foreach (int teste in calculePuissance)
@@ -83,62 +89,87 @@ namespace PROJET_CSHARP
                                     case 1: // Nord FRONTIERE
                                         frontiereNord = true;
                                         break;
-                                    case 2: // Ouest FRONTIERE
-                                        frontiereOuest = true;
-                                        break;
-                                    case 8:// Est FRONTIERE
+                                    case 8:// Est FRONTIEREz
                                         frontiereEst = true;
                                         break;
 
                                 }
-                                if (frontiereNord && frontiereOuest)
-                                    if (x != 0)
-                                    {
-                                        if(carteClair[x,y-1]!='M' && carteClair[x,y-1]!='F' || carteClair[x-1, y] != 'M' && carteClair[x-1, y] != 'F')
-                                        {
-                                        //lettreTerrain++;
-                                        }
-                                        carteClair[x, y] = lettreTerrain;
-                                         
-                                    }
-                                    else
-                                        carteClair[x, y] = lettreTerrain;
-                                else if (frontiereNord && !frontiereOuest)
+                            }
+
+                            if (!frontiereEst)
+                            {
+                                charAEcrire.Add(x + ":" + y);
+                                Console.WriteLine("Pas de FEST en" + x + ":" + y);
+
+                                if (!frontiereNord && !valeurTempo)
                                 {
-                                    if (y != 0)
-                                        carteClair[x, y] = carteClair[x, y - 1];
-                                    else
-                                        carteClair[x, y] = lettreTerrain;
-                                }
-                                else if (!frontiereNord && frontiereOuest)
-                                {
-                                    if (x != 0)
-                                        carteClair[x, y] = carteClair[x - 1, y];
-                                    else
-                                        carteClair[x, y] = lettreTerrain;
-                                }
-                                else if(frontiereEst && !frontiereNord)
-                                {
-                                    if(y!=0)
-                                    {
-                                        carteClair[x, y] = carteClair[x, y - 1];
-                                    }
+                                    valeurEnAttente = carteClair[x-1, y];
+                                    Console.WriteLine(x + ":" + y + ":" + valeurEnAttente);
+                                    valeurTempo = true;
                                 }
                             }
-                        }
-                        else
-                            if (x != 0)
-                            carteClair[x, y] = carteClair[x - 1, y];
-                        else if (y != 0)
-                            carteClair[x, y] = carteClair[x, y - 1];
-                    }
-                    // Forêt
-                    if (carteDecodeCopy[x, y] >= 32 && carteDecodeCopy[x, y] <= 47)
+                            else
+                            {
+                                if (frontiereNord)
+                                {
+                                    if (valeurTempo)
+                                    {
+
+                                        carteClair[x, y] = valeurEnAttente;
+                                        if (charAEcrire.Count != 0)
+                                        {
+                                            foreach (string caractere in charAEcrire)
+                                            {
+                                                int valX = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
+                                                int valY = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
+
+                                                carteClair[valX, valY] = valeurEnAttente;
+                                            }
+                                        }
+                                        charAEcrire.Clear();
+                                        valeurTempo = false;
+                                    }
+                                    else
+                                    {
+                                        carteClair[x, y] = lettreTerrain;
+                                        if (charAEcrire.Count != 0)
+                                        {
+                                            foreach (string caractere in charAEcrire)
+                                            {
+                                                int valX = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
+                                                int valY = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
+
+                                                carteClair[valX, valY] = lettreTerrain;
+                                            }
+                                        }
+                                        lettreTerrain++;
+                                        charAEcrire.Clear();
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                    carteClair[x, y] = carteClair[x-1, y];
+                                    if (charAEcrire.Count != 0)
+                                    {
+                                        foreach (string caractere in charAEcrire)
+                                        {
+                                            int valX = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
+                                            int valY = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
+
+                                            carteClair[valX, valY] = carteClair[x - 1, y];
+                                        }
+                                    }
+                                    charAEcrire.Clear();
+                                }
+                                valeurTempo = false;
+
+                            }
+                        }   
+                    }else if (carteDecodeCopy[x, y] >= 32 && carteDecodeCopy[x, y] <= 47) // Forêt
                     {
                         carteClair[x, y] = 'F';
-                    }
-                    // Mer
-                    if (carteDecodeCopy[x, y] >= 64 && carteDecodeCopy[x, y] <= 79)
+                    }else if (carteDecodeCopy[x, y] >= 64 && carteDecodeCopy[x, y] <= 79) // Mer
                     {
                         carteClair[x, y] = 'M';
                     }

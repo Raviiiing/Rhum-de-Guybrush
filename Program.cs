@@ -6,7 +6,7 @@ namespace PROJET_CSHARP
     {
         static void Main(string[] args)
         {
-            DecodageCarte lacarte = new DecodageCarte(@"../../../Cartes/Phatt.chiffre");
+            DecodageCarte lacarte = new DecodageCarte(@"../../../Cartes/Scabb.chiffre");
             lacarte.DecodageDeLaCarte();
             lacarte.Affiche();
             lacarte.AireMoyenne();
