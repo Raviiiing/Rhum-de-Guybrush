@@ -93,7 +93,9 @@ namespace PROJET_CSHARP
                 string nomFichier = Path.GetFileName(this.fichierPath);
                 string nomFichierSansExtension = nomFichier.Remove(nomFichier.LastIndexOf(".") + 1);
                 Console.WriteLine(pathDossier + nomFichierSansExtension + "chiffre");
-                using(StreamWriter streamWriter = File.AppendText(@pathDossier + nomFichierSansExtension + "chiffre"))
+                if (File.Exists(pathDossier + nomFichierSansExtension + "chiffre"))
+                    File.Delete(pathDossier + nomFichierSansExtension + "chiffre");
+                using (StreamWriter streamWriter = File.AppendText(@pathDossier + nomFichierSansExtension + "chiffre"))
                 {
                     streamWriter.WriteLine(carteUneFoisCodee);
                     streamWriter.Close();
