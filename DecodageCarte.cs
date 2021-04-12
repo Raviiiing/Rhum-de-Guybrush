@@ -47,17 +47,16 @@ namespace PROJET_CSHARP
         // Méthodes
         public void DecodageDeLaCarte()
         {
-            int x, y;
             char lettreTerrain = 'a';
             bool frontiereNord;
             bool frontiereEst;
-            for (x = 0; x < 10; x++)
+            for (int x = 0; x < 10; x++)
             {
                 List<string> charAEcrire = new List<string>();
                 bool valeurTempo = false;
                 char valeurEnAttente = lettreTerrain;
 
-                for (y = 0; y < 10; y++)
+                for (int y = 0; y < 10; y++)
                 {
                     // Terrain
                     if (carteDecodeCopy[x, y] >= 0 && carteDecodeCopy[x, y] <= 15)
@@ -176,13 +175,14 @@ namespace PROJET_CSHARP
             }
             InitParcelle();
         }
-
+        /// <summary>
+        /// Permet d'afficher dans la carte dans la console
+        /// </summary>
         public void Affiche()
         {
-            int x, y;
-            for (x = 0; x < 10; x++)
+            for (int x = 0; x < 10; x++)
             {
-                for (y = 0; y < 10; y++)
+                for (int y = 0; y < 10; y++)
                 {
                     if (carteClair[x, y] == 'M')
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -194,9 +194,12 @@ namespace PROJET_CSHARP
                 }
                 Console.WriteLine("");
             }
+            Console.WriteLine(" ");
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// Permet d'initialiser en mémoire le dictionnaire de données qui va sauvegarder l'ensemble des coordonnées pour chaques type de parcelles
+        /// </summary>
         private void InitParcelle()
         {
             int x = 0, y = 0;
@@ -214,7 +217,9 @@ namespace PROJET_CSHARP
                 }
             }
         }
-
+        /// <summary>
+        /// Permet d'afficher le nombre parcelles ainsi que leurs coordonnées en fonction de leurs caractères
+        /// </summary>
         public void Parcelles()
         {
             foreach (KeyValuePair<char, List<string>> tab in parcelle)
@@ -228,6 +233,10 @@ namespace PROJET_CSHARP
                 Console.WriteLine(" ");
             }
         }
+        /// <summary>
+        /// Affiche la taille d'une parcelle en fonction du caractère demandé
+        /// </summary>
+        /// <param name="parc">Correspond au caractère qui est demandé</param>
         public void TailleParcelle(char parc)
         {
             try
@@ -235,14 +244,17 @@ namespace PROJET_CSHARP
                 List<string> coordonne = parcelle[parc];
                 Console.WriteLine("Taille de la parcelle {0} : {1} ", parc, coordonne.Count);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Erreur : Parcelle inexistante");
                 return;
             }
             Console.WriteLine(" ");
         }
-
+        /// <summary>
+        /// Affiche toutes les parcelles qui ont une aire supérieure à nb
+        /// </summary>
+        /// <param name="nb">Corresponds à l'aire demandée</param>
         public void TailleSupp(int nb)
         {
             foreach (KeyValuePair<char, List<string>> tab in parcelle)
@@ -253,8 +265,11 @@ namespace PROJET_CSHARP
                     Console.WriteLine("Parcelle {0}: {1} unites ", tab.Key, coordonne.Count);
                 }
             }
+            Console.WriteLine(" ");
         }
-
+        /// <summary>
+        /// Permets d'afficher l'aire moyenne de toutes les parcelles de la carte
+        /// </summary>
         public void AireMoyenne()
         {
             int total = 0, nbParcelle = 0;
@@ -267,6 +282,7 @@ namespace PROJET_CSHARP
             double aire = (Double)total / nbParcelle;
 
             Console.WriteLine("Aire moyenne: {0:0.00}", aire);
+            Console.WriteLine(" ");
         }
     }
 }
