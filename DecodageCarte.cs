@@ -47,15 +47,12 @@ namespace PROJET_CSHARP
         // Méthodes
         public void DecodageDeLaCarte()
         {
-            int x = 0;
-            int y = 0;
+            int x, y;
             char lettreTerrain = 'a';
             bool frontiereNord;
             bool frontiereEst;
             for (x = 0; x < 10; x++)
             {
-
-
                 List<string> charAEcrire = new List<string>();
                 bool valeurTempo = false;
                 char valeurEnAttente = lettreTerrain;
@@ -165,6 +162,10 @@ namespace PROJET_CSHARP
                                 valeurTempo = false;
 
                             }
+                        }
+                        else
+                        {
+                            carteClair[x, y] = carteClair[x-1, y];
                         }   
                     }else if (carteDecodeCopy[x, y] >= 32 && carteDecodeCopy[x, y] <= 47) // Forêt
                     {
