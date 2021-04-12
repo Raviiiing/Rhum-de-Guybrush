@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PROJET_CSHARP 
 {
+    /// <summary>
+    /// Permet de coder une carte
+    /// </summary>
     class CodageCarte
     {
 
@@ -139,7 +142,7 @@ namespace PROJET_CSHARP
 
                 Console.WriteLine("Le fichier {0} à été créé", nomFichierAvecExtension);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine("Chemin de fichier introuvable : erreur");
