@@ -96,12 +96,10 @@ namespace PROJET_CSHARP
                             if (!frontiereEst)
                             {
                                 charAEcrire.Add(x + ":" + y);
-                                Console.WriteLine("Pas de FEST en" + x + ":" + y);
 
                                 if (!frontiereNord && !valeurTempo)
                                 {
                                     valeurEnAttente = carteClair[x-1, y];
-                                    Console.WriteLine(x + ":" + y + ":" + valeurEnAttente);
                                     valeurTempo = true;
                                 }
                             }
