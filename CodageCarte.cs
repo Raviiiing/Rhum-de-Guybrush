@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PROJET_CSHARP 
 {
+    /// <summary>
+    /// Permet de coder une carte
+    /// </summary>
     class CodageCarte
     {
 
