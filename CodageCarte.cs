@@ -7,18 +7,38 @@ namespace PROJET_CSHARP
 {
     class CodageCarte
     {
+
+        #region Attributs
+        /// <summary>
+        /// Copie des cartes .clair dans un tableau 2D
+        /// </summary>
         private char[,] carteCopy = new char[10,10];
+        /// <summary>
+        /// Chaîne de caractère contenant la carte codée 
+        /// Exemple (3:0:0|5:3:2 ..)
+        /// </summary>
         private string carteUneFoisCodee;
+        /// <summary>
+        /// Chemin du fichier .clair (C:/User/Public...)
+        /// </summary>
         private string fichierPath;
+        #endregion
+
+        #region Constructeur
+        /// <summary>
+        /// Constructeur de la classe initalisant la lecture du fichier
+        /// </summary>
+        /// <param name="accesFichier">Chemin d'accès au fichier</param>
         public CodageCarte(string accesFichier)
         {
-            string str;
             this.fichierPath = accesFichier;
-            int x = 0;
-            int y = 0;
+
             try
             {
                 StreamReader file = new StreamReader(accesFichier);
+                int x = 0;
+                int y = 0;
+                string str;
                 while ((str = file.ReadLine()) != null)
                 {
                     foreach (char c in str)
@@ -37,13 +57,18 @@ namespace PROJET_CSHARP
                 return;
             }
         }
+        #endregion
 
+        #region Méthodes
+        /// <summary>
+        /// Méthode codant la carte
+        /// </summary>
+        /// <returns></returns>
         public string CodageDeLaCarte()
         {
-            int x, y;
-            for (x = 0; x < 10; x++)
+            for (int x = 0; x < 10; x++)
             {
-                for (y = 0; y < 10; y++)
+                for (int y = 0; y < 10; y++)
                 {
                     int valeur = 0;
                     if(x == 0)
@@ -75,8 +100,12 @@ namespace PROJET_CSHARP
                     else if (carteCopy[x,y] == 77)
                         valeur += 64;
 
-                    carteUneFoisCodee = carteUneFoisCodee + valeur;
-                    if(y == 9)
+                    //Permet d'ajouter au String "carteUneFoisCodee" la valeur
+                    //Exemple : Si on a String x = "test";
+                    // Si on fait x = x + " ça va"
+                    // Alors x devient "test ça va"
+                    carteUneFoisCodee = carteUneFoisCodee + valeur; 
+                    if (y == 9)
                         carteUneFoisCodee = carteUneFoisCodee + '|';
                     else
                         carteUneFoisCodee = carteUneFoisCodee + ':';
@@ -85,29 +114,38 @@ namespace PROJET_CSHARP
             return carteUneFoisCodee;
         }
 
+        /// <summary>
+        /// Permet de créer le fichier .chiffre de la carte codée
+        /// </summary>
         public void creerFichier()
         {
             try
             {
+                //Chemin du dossier sans la nom du fichier
                 string pathDossier = this.fichierPath.Remove(this.fichierPath.LastIndexOf("/") + 1);
+                //Nom du fichier avec l'extension .clair
                 string nomFichier = Path.GetFileName(this.fichierPath);
-                string nomFichierSansExtension = nomFichier.Remove(nomFichier.LastIndexOf(".") + 1);
-                if (File.Exists(pathDossier + nomFichierSansExtension + "chiffre"))
-                    File.Delete(pathDossier + nomFichierSansExtension + "chiffre");
-                using (StreamWriter streamWriter = File.AppendText(@pathDossier + nomFichierSansExtension + "chiffre"))
+                //On supprime l'extension .clair et on remplace par .chiffre
+                string nomFichierAvecExtension = nomFichier.Remove(nomFichier.LastIndexOf(".") + 1) + "chiffre";
+
+                if (File.Exists(pathDossier + nomFichierAvecExtension))
+                    File.Delete(pathDossier + nomFichierAvecExtension);
+
+                using (StreamWriter streamWriter = File.AppendText(@pathDossier + nomFichierAvecExtension))
                 {
                     streamWriter.WriteLine(carteUneFoisCodee);
                     streamWriter.Close();
                 }
 
-                Console.WriteLine("Le fichier {0}chiffre à été créé", nomFichierSansExtension);
-
+                Console.WriteLine("Le fichier {0} à été créé", nomFichierAvecExtension);
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 Console.WriteLine("Chemin de fichier introuvable : erreur");
                 return;
             }
         }
+        #endregion
     }
 }
