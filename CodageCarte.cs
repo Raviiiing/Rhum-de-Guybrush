@@ -103,7 +103,7 @@ namespace PROJET_CSHARP
                 Console.WriteLine("Le fichier {0}chiffre à été créé", nomFichierSansExtension);
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Chemin de fichier introuvable : erreur");
                 return;
