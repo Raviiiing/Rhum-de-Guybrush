@@ -6,7 +6,7 @@ using System.IO;
 namespace PROJET_CSHARP
 {
     /// <summary>
-    /// Classe DecodageCarte : Permet de décoder la carte codée
+    /// Permet de décoder la carte codée
     /// </summary>
     class DecodageCarte
     {
