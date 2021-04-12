@@ -89,7 +89,7 @@ namespace PROJET_CSHARP
                         for (int i = 0; i < 4; i++)
                         {
                             if (valeur % 2 == 1)
-                                calculePuissance.Add((int)System.Math.Pow(2, i));
+                                calculePuissance.Add((int)Math.Pow(2, i));
 
                             valeur = valeur / 2;
                         }
