@@ -77,13 +77,13 @@ namespace PROJET_CSHARP
             bool frontiereEst;
             bool valeurTempo = false;
             List<string> charAEcrire = new List<string>();
-            for (int x = 0; x < 10; x++)
+            for (int hauteur = 0; hauteur < 10; hauteur++)
             {
-                for (int y = 0; y < 10; y++)
+                for (int largeur = 0; largeur < 10; largeur++)
                 {
-                    if (carteDecodeCopy[x, y] >= 0 && carteDecodeCopy[x, y] <= 15) // Terrain
+                    if (carteDecodeCopy[hauteur, largeur] >= 0 && carteDecodeCopy[hauteur, largeur] <= 15) // Terrain
                     {
-                        valeur = carteDecodeCopy[x, y];
+                        valeur = carteDecodeCopy[hauteur, largeur];
                         List<int> calculePuissance = new List<int>();
 
                         for (int i = 0; i < 4; i++)
@@ -95,8 +95,8 @@ namespace PROJET_CSHARP
                         }
 
                         frontiereNord = false;
-                        frontiereEst= false;
-                        
+                        frontiereEst = false;
+
 
                         if (calculePuissance.Count != 0)
                         {
@@ -116,87 +116,59 @@ namespace PROJET_CSHARP
 
                             if (!frontiereEst)
                             {
-                                charAEcrire.Add(x + ":" + y);
+                                charAEcrire.Add(hauteur + ":" + largeur);
 
                                 if (!frontiereNord && !valeurTempo)
                                 {
-                                    valeurEnAttente = carteClair[x-1, y];
+                                    valeurEnAttente = carteClair[hauteur - 1, largeur];
                                     valeurTempo = true;
                                 }
                             }
                             else
                             {
-                                if (frontiereNord)
+                                if (!frontiereNord && !valeurTempo)
+                                    valeurEnAttente = carteClair[hauteur - 1, largeur];
+
+
+                                carteClair[hauteur, largeur] = valeurEnAttente;
+
+                                if (charAEcrire.Count != 0)
                                 {
-                                    if (valeurTempo)
+                                    foreach (string caractere in charAEcrire)
                                     {
+                                        int valHauteur = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
+                                        int valLargeur = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
 
-                                        carteClair[x, y] = valeurEnAttente;
-                                        if (charAEcrire.Count != 0)
-                                        {
-                                            foreach (string caractere in charAEcrire)
-                                            {
-                                                int valX = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
-                                                int valY = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
-
-                                                carteClair[valX, valY] = valeurEnAttente;
-                                            }
-                                        }
-                                        charAEcrire.Clear();
-                                        valeurTempo = false;
+                                        carteClair[valHauteur, valLargeur] = valeurEnAttente;
                                     }
-                                    else
-                                    {
-                                        carteClair[x, y] = lettreParcelle;
-                                        if (charAEcrire.Count != 0)
-                                        {
-                                            foreach (string caractere in charAEcrire)
-                                            {
-                                                int valX = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
-                                                int valY = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
-
-                                                carteClair[valX, valY] = lettreParcelle;
-                                            }
-                                        }
-                                        lettreParcelle++;
-                                        charAEcrire.Clear();
-                                    }
-                                    
                                 }
-                                else
-                                {
-                                    carteClair[x, y] = carteClair[x-1, y];
-                                    if (charAEcrire.Count != 0)
-                                    {
-                                        foreach (string caractere in charAEcrire)
-                                        {
-                                            int valX = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
-                                            int valY = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
+                                if (!valeurTempo && frontiereNord)
+                                    lettreParcelle++;
 
-                                            carteClair[valX, valY] = carteClair[x - 1, y];
-                                        }
-                                    }
-                                    charAEcrire.Clear();
-                                }
+                                charAEcrire.Clear();
                                 valeurTempo = false;
+                                valeurEnAttente = lettreParcelle;
 
                             }
                         }
                         else
                         {
-                            carteClair[x, y] = carteClair[x-1, y];
-                        }   
-                    }else if (carteDecodeCopy[x, y] >= 32 && carteDecodeCopy[x, y] <= 47) // Forêt
+                            carteClair[hauteur, largeur] = carteClair[hauteur - 1, largeur];
+                        }
+                    }
+                    else if (carteDecodeCopy[hauteur, largeur] >= 32 && carteDecodeCopy[hauteur, largeur] <= 47) // Forêt
                     {
-                        carteClair[x, y] = 'F';
-                    }else if (carteDecodeCopy[x, y] >= 64 && carteDecodeCopy[x, y] <= 79) // Mer
+                        carteClair[hauteur, largeur] = 'F';
+                    }
+                    else if (carteDecodeCopy[hauteur, largeur] >= 64 && carteDecodeCopy[hauteur, largeur] <= 79) // Mer
                     {
-                        carteClair[x, y] = 'M';
+                        carteClair[hauteur, largeur] = 'M';
                     }
                 }
             }
             InitParcelle();
         }
+
         /// <summary>
         /// Permet d'afficher dans la carte dans la console
         /// </summary>
