@@ -5,14 +5,32 @@ using System.IO;
 
 namespace PROJET_CSHARP
 {
+    /// <summary>
+    /// Classe DecodageCarte : Permet de décoder la carte codée
+    /// </summary>
     class DecodageCarte
     {
 
-        // Attributs
+        #region Attributs
+        /// <summary>
+        /// Associe à chaque lettre la liste des coordonnées
+        /// </summary>
         private Dictionary<char, List<string>> parcelle = new Dictionary<char, List<string>>();
+        /// <summary>
+        /// Permet de mettre la carte codée dans un tableau
+        /// </summary>
         private int[,] carteDecodeCopy = new int[10, 10];
+        /// <summary>
+        /// Permet de garder en memoir la carte décoder
+        /// </summary>
         private char[,] carteClair = new char[10, 10];
-        // Constructeur
+        #endregion
+
+        #region Constructeur
+        /// <summary>
+        /// Constructeur de la classe
+        /// </summary>
+        /// <param name="cheminAcces">Chemin d'acces du fichier de la carte</param>
         public DecodageCarte(string cheminAcces)
         {
             string str;
@@ -44,24 +62,28 @@ namespace PROJET_CSHARP
                 return;
             }
         }
-        // Méthodes
+        #endregion
+
+        #region Méthodes
+        /// <summary>
+        /// Décode la carte et retient en memoir la carte clair
+        /// </summary>
         public void DecodageDeLaCarte()
         {
-            char lettreTerrain = 'a';
+            int valeur; // stock en memoir la valeur de la case de carteDecodeCopy[x, y]
+            char lettreParcelle = 'a';
+            char valeurEnAttente = lettreParcelle;
             bool frontiereNord;
             bool frontiereEst;
+            bool valeurTempo = false;
+            List<string> charAEcrire = new List<string>();
             for (int x = 0; x < 10; x++)
             {
-                List<string> charAEcrire = new List<string>();
-                bool valeurTempo = false;
-                char valeurEnAttente = lettreTerrain;
-
                 for (int y = 0; y < 10; y++)
                 {
-                    // Terrain
-                    if (carteDecodeCopy[x, y] >= 0 && carteDecodeCopy[x, y] <= 15)
+                    if (carteDecodeCopy[x, y] >= 0 && carteDecodeCopy[x, y] <= 15) // Terrain
                     {
-                        int valeur = carteDecodeCopy[x, y];
+                        valeur = carteDecodeCopy[x, y];
                         List<int> calculePuissance = new List<int>();
 
                         for (int i = 0; i < 4; i++)
@@ -85,7 +107,7 @@ namespace PROJET_CSHARP
                                     case 1: // Nord FRONTIERE
                                         frontiereNord = true;
                                         break;
-                                    case 8:// Est FRONTIEREz
+                                    case 8: // Est FRONTIERE
                                         frontiereEst = true;
                                         break;
 
@@ -125,7 +147,7 @@ namespace PROJET_CSHARP
                                     }
                                     else
                                     {
-                                        carteClair[x, y] = lettreTerrain;
+                                        carteClair[x, y] = lettreParcelle;
                                         if (charAEcrire.Count != 0)
                                         {
                                             foreach (string caractere in charAEcrire)
@@ -133,10 +155,10 @@ namespace PROJET_CSHARP
                                                 int valX = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
                                                 int valY = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
 
-                                                carteClair[valX, valY] = lettreTerrain;
+                                                carteClair[valX, valY] = lettreParcelle;
                                             }
                                         }
-                                        lettreTerrain++;
+                                        lettreParcelle++;
                                         charAEcrire.Clear();
                                     }
                                     
@@ -284,5 +306,6 @@ namespace PROJET_CSHARP
             Console.WriteLine("Aire moyenne: {0:0.00}", aire);
             Console.WriteLine(" ");
         }
+        #endregion
     }
 }
