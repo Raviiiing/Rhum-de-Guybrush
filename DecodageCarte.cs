@@ -77,6 +77,7 @@ namespace PROJET_CSHARP
             bool frontiereEst;
             bool valeurTempo = false;
             List<string> charAEcrire = new List<string>();
+
             for (int hauteur = 0; hauteur < 10; hauteur++)
             {
                 for (int largeur = 0; largeur < 10; largeur++)
@@ -98,27 +99,28 @@ namespace PROJET_CSHARP
                         frontiereEst = false;
 
 
-                        if (calculePuissance.Count != 0)
+                        if (calculePuissance.Count != 0) //S'il y a des frontières, on cherche si ce sont des frontières NORD et/ou EST.
                         {
                             foreach (int teste in calculePuissance)
                             {
                                 switch (teste)
                                 {
-                                    case 1: // Nord FRONTIERE
+                                    case 1: // Nord FRONTIERE.
                                         frontiereNord = true;
                                         break;
-                                    case 8: // Est FRONTIERE
+                                    case 8: // Est FRONTIERE.
                                         frontiereEst = true;
                                         break;
-
                                 }
                             }
 
-                            if (!frontiereEst)
+                            if (!frontiereEst) //S'il n'y a pas de frontières à l'EST.
                             {
-                                charAEcrire.Add(hauteur + ":" + largeur);
+                                //On ajoute les coordonnées des caractères qui seront à écrire jusqu'à ce quil y est une frontière à l'EST.
+                                // dans la List<string> charAEcrire sous forme de string "hauteur:largeur".
+                                charAEcrire.Add(hauteur + ":" + largeur); 
 
-                                if (!frontiereNord && !valeurTempo)
+                                if (!frontiereNord && !valeurTempo) 
                                 {
                                     valeurEnAttente = carteClair[hauteur - 1, largeur];
                                     valeurTempo = true;
@@ -126,32 +128,38 @@ namespace PROJET_CSHARP
                             }
                             else
                             {
+                                //S'il y a une frontière à l'EST mais pas de frontière au NORD
+                                // alors la valeur x,y de la carte prend la valeur en (hauteur-1,largeur) (= la valeur du dessus).
                                 if (!frontiereNord && !valeurTempo)
-                                    valeurEnAttente = carteClair[hauteur - 1, largeur];
+                                    carteClair[hauteur, largeur] = carteClair[hauteur - 1, largeur];
+                                else 
+                                    //Sinon elle prend la variable valeurEnAttente
+                                    carteClair[hauteur, largeur] = valeurEnAttente;
 
-
-                                carteClair[hauteur, largeur] = valeurEnAttente;
-
+                                //On écrit le caractère qu'il faut sur les coordonnées que l'on a ajouté dans la liste charAEcrire auparavant (s'il y en a).
                                 if (charAEcrire.Count != 0)
                                 {
                                     foreach (string caractere in charAEcrire)
                                     {
+                                        //On récupère le hauteur du string "hauteur:largeur".
                                         int valHauteur = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
+                                        //On récupère le largeur du string "hauteur:largeur".
                                         int valLargeur = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
 
                                         carteClair[valHauteur, valLargeur] = valeurEnAttente;
                                     }
                                 }
+
+                                //On incrémente le char dans le cas où il n'y a pas de frontière au Nord et qu'il est pas relié a un morceau de parcelle au dessus (!valeurTempo)
                                 if (!valeurTempo && frontiereNord)
                                     lettreParcelle++;
 
                                 charAEcrire.Clear();
                                 valeurTempo = false;
                                 valeurEnAttente = lettreParcelle;
-
                             }
                         }
-                        else
+                        else //S'il n'y a pas de frontière(s), la valeur en (hauteur,largeur) est forcément en dessous de la valeur qu'il lui faudra (hauteur-1,largeur)
                         {
                             carteClair[hauteur, largeur] = carteClair[hauteur - 1, largeur];
                         }

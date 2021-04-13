@@ -12,12 +12,12 @@ namespace PROJET_CSHARP
         {
 
             //Permet de créer l'objet codant une carte .clair
-            CodageCarte nouvcarte = new CodageCarte(@"../../../Cartes/Scabb.clair");
+            CodageCarte nouvcarte = new CodageCarte(@"../../../Cartes/Phatt.clair");
             nouvcarte.CodageDeLaCarte();
             nouvcarte.CreerFichier();
 
             //Permet de créer l'objet décodant une carte .chiffre
-            DecodageCarte lacarte = new DecodageCarte(@"../../../Cartes/Scabb.chiffre");
+            DecodageCarte lacarte = new DecodageCarte(@"../../../Cartes/Phatt.chiffre");
             lacarte.DecodageDeLaCarte();
             lacarte.Affiche();
             lacarte.AireMoyenne();
