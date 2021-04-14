@@ -64,7 +64,7 @@ namespace PROJET_CSHARP
         }
         #endregion
 
-        #region Méthodes
+        #region Méthode
         /// <summary>
         /// Décode la carte et retient en memoir la carte clair
         /// </summary>
@@ -176,7 +176,9 @@ namespace PROJET_CSHARP
             }
             InitParcelle();
         }
+        #endregion
 
+        #region Méthode
         /// <summary>
         /// Permet d'afficher dans la carte dans la console
         /// </summary>
@@ -199,6 +201,9 @@ namespace PROJET_CSHARP
             Console.WriteLine(" ");
             Console.ForegroundColor = ConsoleColor.White;
         }
+        #endregion
+
+        #region Méthode
         /// <summary>
         /// Permet d'initialiser en mémoire le dictionnaire de données qui va sauvegarder l'ensemble des coordonnées pour chaques type de parcelles
         /// </summary>
@@ -219,6 +224,9 @@ namespace PROJET_CSHARP
                 }
             }
         }
+        #endregion
+
+        #region Méthode
         /// <summary>
         /// Permet d'afficher le nombre parcelles ainsi que leurs coordonnées en fonction de leurs caractères
         /// </summary>
@@ -235,6 +243,9 @@ namespace PROJET_CSHARP
                 Console.WriteLine(" ");
             }
         }
+        #endregion
+
+        #region Méthode
         /// <summary>
         /// Affiche la taille d'une parcelle en fonction du caractère demandé
         /// </summary>
@@ -253,6 +264,9 @@ namespace PROJET_CSHARP
             }
             Console.WriteLine(" ");
         }
+        #endregion
+
+        #region Méthode
         /// <summary>
         /// Affiche toutes les parcelles qui ont une aire supérieure à nb
         /// </summary>
@@ -269,6 +283,9 @@ namespace PROJET_CSHARP
             }
             Console.WriteLine(" ");
         }
+        #endregion
+
+        #region Méthode
         /// <summary>
         /// Permets d'afficher l'aire moyenne de toutes les parcelles de la carte
         /// </summary>
