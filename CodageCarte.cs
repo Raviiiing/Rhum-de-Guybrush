@@ -11,31 +11,13 @@ namespace PROJET_CSHARP
     class CodageCarte
     {
 
-        #region Attributs
+        #region Méthodes
         /// <summary>
-        /// Copie des cartes .clair dans un tableau 2D
+        /// Méthode de la classe initalisant la lecture du fichier
         /// </summary>
-        private char[,] carteCopy = new char[10,10];
-        /// <summary>
-        /// Chaîne de caractère contenant la carte codée 
-        /// Exemple (3:0:0|5:3:2 ..)
-        /// </summary>
-        private string carteUneFoisCodee;
-        /// <summary>
-        /// Chemin du fichier .clair (C:/User/Public...)
-        /// </summary>
-        private string fichierPath;
-        #endregion
-
-        #region Constructeur
-        /// <summary>
-        /// Constructeur de la classe initalisant la lecture du fichier
-        /// </summary>
-        /// <param name="accesFichier">Chemin d'accès au fichier</param>
-        public CodageCarte(string accesFichier)
+        public static void CodageCarteFichier(string accesFichier)
         {
-            this.fichierPath = accesFichier;
-
+            char[,] carteCopy = new char[10, 10];
             try
             {
                 StreamReader file = new StreamReader(accesFichier);
@@ -59,16 +41,15 @@ namespace PROJET_CSHARP
                 Console.WriteLine(e);
                 return;
             }
+            CodageDeLaCarte(accesFichier, carteCopy);
         }
-        #endregion
 
-        #region Méthodes
         /// <summary>
         /// Méthode codant la carte
         /// </summary>
-        /// <returns></returns>
-        public void CodageDeLaCarte()
+        private static void CodageDeLaCarte(string fichierPath, char[,] carteCopy)
         {
+            string carteUneFoisCodee = "";
             for (int x = 0; x < 10; x++)
             {
                 for (int y = 0; y < 10; y++)
@@ -107,26 +88,27 @@ namespace PROJET_CSHARP
                     //Exemple : Si on a String x = "test";
                     // Si on fait x = x + " ça va"
                     // Alors x devient "test ça va"
-                    carteUneFoisCodee = carteUneFoisCodee + valeur; 
+                    carteUneFoisCodee += valeur; 
                     if (y == 9)
-                        carteUneFoisCodee = carteUneFoisCodee + '|';
+                        carteUneFoisCodee += '|';
                     else
-                        carteUneFoisCodee = carteUneFoisCodee + ':';
+                        carteUneFoisCodee += ':';
                 }
             }
+            CreerFichier(fichierPath, carteUneFoisCodee);
         }
 
         /// <summary>
         /// Permet de créer le fichier .chiffre de la carte codée
         /// </summary>
-        public void CreerFichier()
+        private static void CreerFichier(string fichierPath, string carteUneFoisCodee)
         {
             try
             {
                 //Chemin du dossier sans la nom du fichier
-                string pathDossier = this.fichierPath.Remove(this.fichierPath.LastIndexOf("/") + 1);
+                string pathDossier = fichierPath.Remove(fichierPath.LastIndexOf("/") + 1);
                 //Nom du fichier avec l'extension .clair
-                string nomFichier = Path.GetFileName(this.fichierPath);
+                string nomFichier = Path.GetFileName(fichierPath);
                 //On supprime l'extension .clair et on remplace par .chiffre
                 string nomFichierAvecExtension = nomFichier.Remove(nomFichier.LastIndexOf(".") + 1) + "chiffre";
 
