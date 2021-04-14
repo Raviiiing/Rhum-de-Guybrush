@@ -21,7 +21,7 @@ namespace PROJET_CSHARP
         /// </summary>
         private int[,] carteDecodeCopy = new int[10, 10];
         /// <summary>
-        /// Permet de garder en memoir la carte décoder
+        /// Permet de garder en mémoire la carte décodée
         /// </summary>
         private char[,] carteClair = new char[10, 10];
         #endregion
@@ -66,11 +66,11 @@ namespace PROJET_CSHARP
 
         #region Méthode
         /// <summary>
-        /// Décode la carte et retient en memoir la carte clair
+        /// Décode la carte et retient en mémoire la carte clair
         /// </summary>
         public void DecodageDeLaCarte()
         {
-            int valeur; // stock en memoir la valeur de la case de carteDecodeCopy[x, y]
+            int valeur; // stock en mémoire la valeur de la case de carteDecodeCopy[hauteur, largeur]
             char lettreParcelle = 'a';
             char valeurEnAttente = lettreParcelle;
             bool frontiereNord;
@@ -129,7 +129,7 @@ namespace PROJET_CSHARP
                             else
                             {
                                 //S'il y a une frontière à l'EST mais pas de frontière au NORD
-                                // alors la valeur x,y de la carte prend la valeur en (hauteur-1,largeur) (= la valeur du dessus).
+                                // alors la valeur hauteur,largeur de la carte prend la valeur en (hauteur-1,largeur) (= la valeur du dessus).
                                 if (!frontiereNord && !valeurTempo)
                                     carteClair[hauteur, largeur] = carteClair[hauteur - 1, largeur];
                                 else 
@@ -174,7 +174,7 @@ namespace PROJET_CSHARP
                     }
                 }
             }
-            InitParcelle();
+            InitParcelle(); // Pour préajouter les coordonées des parcelles en fonction des caractères
         }
         #endregion
 
