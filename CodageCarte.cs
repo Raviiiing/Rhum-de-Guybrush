@@ -67,7 +67,7 @@ namespace PROJET_CSHARP
         /// Méthode codant la carte
         /// </summary>
         /// <returns></returns>
-        public string CodageDeLaCarte()
+        public void CodageDeLaCarte()
         {
             for (int x = 0; x < 10; x++)
             {
@@ -114,13 +114,12 @@ namespace PROJET_CSHARP
                         carteUneFoisCodee = carteUneFoisCodee + ':';
                 }
             }
-            return carteUneFoisCodee;
         }
 
         /// <summary>
         /// Permet de créer le fichier .chiffre de la carte codée
         /// </summary>
-        public void creerFichier()
+        public void CreerFichier()
         {
             try
             {
