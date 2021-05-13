@@ -38,14 +38,17 @@ namespace PROJET_CSHARP
 
             try
             {
+                //On commence la lecture du fichier
                 StreamReader file = new StreamReader(accesFichier);
                 int x = 0;
                 int y = 0;
                 string str;
                 while ((str = file.ReadLine()) != null)
                 {
+                    //Pour chaques caractéres dans le string
                     foreach (char c in str)
                     {
+                        //On ajoute le caractére dans le tableau
                         carteCopy[x, y] = c;
                         y++;
                     }

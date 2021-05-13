@@ -38,13 +38,17 @@ namespace PROJET_CSHARP
             int y = 0;
             try
             {
+                // On commence la lecture du fichier
                 StreamReader file = new StreamReader(cheminAcces);
                 while ((str = file.ReadLine()) != null)
                 {
+                    // On ajoute chaques lignes dans un tableau de lignes avec un split
                     string[] tableauLigne = str.Split('|', StringSplitOptions.RemoveEmptyEntries);
                     foreach (string ligne in tableauLigne)
                     {
+                        //Puis on split chaque ligne et on ajoute les valeurs dans un tableau de valeur.
                         string[] valeur = ligne.Split(':');
+                        //Puis on convertit chaque valeur en entier dans un tableau d'entier
                         foreach (string entier in valeur)
                         {
                             carteDecodeCopy[x, y] = Convert.ToInt32(entier);
@@ -188,6 +192,7 @@ namespace PROJET_CSHARP
             {
                 for (int y = 0; y < 10; y++)
                 {
+                    //On affiche les caractéres en fonction du type avec une couleure qui lui est propre
                     if (carteClair[x, y] == 'M')
                         Console.ForegroundColor = ConsoleColor.Blue;
                     else if (carteClair[x, y] == 'F')
@@ -214,11 +219,13 @@ namespace PROJET_CSHARP
             {
                 for (y = 0; y < 10; y++)
                 {
+                    //Si on a un caractére autre que Mer ou Forêt
                     if (carteClair[x, y] != 'F' && carteClair[x, y] != 'M')
                     {
+                        //Si le caractére n'existe pas dans le dictionnaire de donnée on l'ajoute puis on lui créer une Liste de coordonnée
                         if (!parcelle.ContainsKey(carteClair[x, y]))
                             parcelle.Add(carteClair[x, y], new List<string>());
-
+                        //On ajoute la coordonnée de l'unité dans la liste qui correspond à son caractére.
                         parcelle[carteClair[x, y]].Add(x + "," + y);
                     }
                 }
@@ -234,8 +241,10 @@ namespace PROJET_CSHARP
         {
             foreach (KeyValuePair<char, List<string>> tab in parcelle)
             {
+                //On affiche le nombre d'unitée par parcelle
                 List<string> coordonne = tab.Value;
                 Console.WriteLine("PARCELLE {0} - {1} unites ", tab.Key, coordonne.Count);
+                //Puis on affiche les coordonnées de toutes les unités dans la parcelle
                 foreach (string co in coordonne)
                     Console.Write("({0}) ", co);
 
@@ -254,7 +263,7 @@ namespace PROJET_CSHARP
         {
             try
             {
-                List<string> coordonne = parcelle[parc];
+                List<string> coordonne = parcelle[parc]; //On prend la liste de coordonnée du dictionnaire de donnée via la clé qui vaut "parc"
                 Console.WriteLine("Taille de la parcelle {0} : {1} ", parc, coordonne.Count);
             }
             catch (Exception)
@@ -273,10 +282,10 @@ namespace PROJET_CSHARP
         /// <param name="nb">Corresponds à l'aire demandée</param>
         public void TailleSupp(int nb)
         {
-            foreach (KeyValuePair<char, List<string>> tab in parcelle)
+            foreach (KeyValuePair<char, List<string>> tab in parcelle) // Pour chaque Parcelle faire
             {
-                List<string> coordonne = tab.Value;
-                if (coordonne.Count >= nb)
+                List<string> coordonne = tab.Value; 
+                if (coordonne.Count >= nb) //Si le nombre de coordonnée (unités) est supérieur ou egal au nombre nb 
                 {
                     Console.WriteLine("Parcelle {0}: {1} unites ", tab.Key, coordonne.Count);
                 }
@@ -292,13 +301,15 @@ namespace PROJET_CSHARP
         public void AireMoyenne()
         {
             int total = 0, nbParcelle = 0;
+            //Pour chaque liste de coordonnée par parcelle
             foreach (KeyValuePair<char, List<string>> tab in parcelle)
             {
                 List<string> coordonne = tab.Value;
-                total = total + coordonne.Count;
-                nbParcelle = nbParcelle + 1;
+                total = total + coordonne.Count; // Compte le nombre de coordonne dans la parcelle
+                nbParcelle = nbParcelle + 1; // On incrémente le nombre de parcelle
             }
-            double aire = (Double)total / nbParcelle;
+            //Une fois qu'on a compter le nombre de coordonne total 
+            double aire = (Double)total / nbParcelle; // On divise le nombre de coordonne total par le nombre de parcelle
 
             Console.WriteLine("Aire moyenne: {0:0.00}", aire);
             Console.WriteLine(" ");
