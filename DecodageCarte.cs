@@ -21,7 +21,7 @@ namespace PROJET_CSHARP
         /// </summary>
         private int[,] carteDecodeCopy = new int[10, 10];
         /// <summary>
-        /// Permet de garder en memoir la carte décoder
+        /// Permet de garder en mémoire la carte décodée
         /// </summary>
         private char[,] carteClair = new char[10, 10];
         #endregion
@@ -42,20 +42,22 @@ namespace PROJET_CSHARP
                 StreamReader file = new StreamReader(cheminAcces);
                 while ((str = file.ReadLine()) != null)
                 {
-                    // On ajoute chaques lignes dans un tableau de lignes avec un split
+                    // On ajoute chaques lignes dans un tableau de lignes avec un split sur le char '|'
+                    // Le StringSplitOptions.RemoveEmptyEntries permet de supprimer les espaces vides laissé par le split du char '|'
                     string[] tableauLigne = str.Split('|', StringSplitOptions.RemoveEmptyEntries);
                     foreach (string ligne in tableauLigne)
                     {
-                        //Puis on split chaque ligne et on ajoute les valeurs dans un tableau de valeur.
+                        //Puis on split chaque ligne sur le char ':' et on ajoute les valeurs dans un tableau de valeur.
                         string[] valeur = ligne.Split(':');
-                        //Puis on convertit chaque valeur en entier dans un tableau d'entier
+                        //Puis chaque valeur est stockée dans un tableau d'entier
                         foreach (string entier in valeur)
                         {
                             carteDecodeCopy[x, y] = Convert.ToInt32(entier);
+                            Console.WriteLine("x : {0}, y : {1} et entier : {2}", x, y, entier);
                             y++;
                         }
-                        x++;
-                        y = 0;
+                        x++; //On descend d'une ligne
+                        y = 0; //On recommence au début de la ligne x
                     }
                 }
                 file.Close();
@@ -68,44 +70,48 @@ namespace PROJET_CSHARP
         }
         #endregion
 
-        #region Méthode
+        #region Méthodes
         /// <summary>
-        /// Décode la carte et retient en memoir la carte clair
+        /// Décode la carte et retient en mémoire la carte clair
         /// </summary>
         public void DecodageDeLaCarte()
         {
-            int valeur; // stock en memoir la valeur de la case de carteDecodeCopy[x, y]
+            int valeur; // stock en mémoire la valeur de la case de carteDecodeCopy[hauteur, largeur]
             char lettreParcelle = 'a';
-            char valeurEnAttente = lettreParcelle;
+            char lettreEnAttente = lettreParcelle;
             bool frontiereNord;
             bool frontiereEst;
             bool valeurTempo = false;
             List<string> charAEcrire = new List<string>();
 
-            for (int hauteur = 0; hauteur < 10; hauteur++)
-            {
-                for (int largeur = 0; largeur < 10; largeur++)
+            for (int hauteur = 0; hauteur < 10; hauteur++)      // Boucle qui parcours une carte chiffre
+            {                                                   // puis décode cette carte pour  
+                for (int largeur = 0; largeur < 10; largeur++)  // écrire une carte clair
                 {
                     if (carteDecodeCopy[hauteur, largeur] >= 0 && carteDecodeCopy[hauteur, largeur] <= 15) // Terrain
                     {
-                        valeur = carteDecodeCopy[hauteur, largeur];
-                        List<int> calculePuissance = new List<int>();
+                        valeur = carteDecodeCopy[hauteur, largeur]; //On copie la valeur de l'unité dans la variable valeur
+                        List<int> calculePuissance = new List<int>(); // Garde en mémoire les puissances (0/1/2/3) de 2 de chaque unité
 
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (valeur % 2 == 1)
-                                calculePuissance.Add((int)Math.Pow(2, i));
 
-                            valeur = valeur / 2;
+                        // Mini algorithme permettant de trouver la puissance x (0,1,2 ou 3) de 2 
+                        // en divisant successivement la valeur de l'unité par 2
+                        // Par exemple pour une parcelle = 2, nous auron une puissance de 1 car 2^1=2 donc fonrtière OUEST.
+                        for (int i = 0; i < 4; i++) 
+                        {                           
+                            if (valeur % 2 == 1) //Si la valeur de l'unité est impaire = frontière
+                                calculePuissance.Add((int)Math.Pow(2, i)); //On ajoute la valeur de la puissance pour plus tard connaître la/les frontière(s)
+
+                            valeur = valeur / 2; //On divise la valeur de l'unité
                         }
 
                         frontiereNord = false;
                         frontiereEst = false;
 
 
-                        if (calculePuissance.Count != 0) //S'il y a des frontières, on cherche si ce sont des frontières NORD et/ou EST.
+                        if (calculePuissance.Count != 0) // S'il y a des frontières, on cherche si ce sont des frontières NORD et/ou EST.
                         {
-                            foreach (int teste in calculePuissance)
+                            foreach (int teste in calculePuissance) // Indication des frontière NORD et/ou EST avec des booléens
                             {
                                 switch (teste)
                                 {
@@ -118,52 +124,56 @@ namespace PROJET_CSHARP
                                 }
                             }
 
-                            if (!frontiereEst) //S'il n'y a pas de frontières à l'EST.
+                            if (!frontiereEst) // S'il n'y a pas de frontières à l'EST.
                             {
-                                //On ajoute les coordonnées des caractères qui seront à écrire jusqu'à ce quil y est une frontière à l'EST.
-                                // dans la List<string> charAEcrire sous forme de string "hauteur:largeur".
+                                // On ajoute les coordonnées des caractères qui seront à écrirent
+                                // jusqu'à ce qu'il y ait une frontière à l'EST dans la List<string> charAEcrire
+                                // sous forme de string "hauteur:largeur".
                                 charAEcrire.Add(hauteur + ":" + largeur); 
 
                                 if (!frontiereNord && !valeurTempo) 
                                 {
-                                    valeurEnAttente = carteClair[hauteur - 1, largeur];
+                                    lettreEnAttente = carteClair[hauteur - 1, largeur];
                                     valeurTempo = true;
                                 }
                             }
                             else
                             {
-                                //S'il y a une frontière à l'EST mais pas de frontière au NORD
-                                // alors la valeur x,y de la carte prend la valeur en (hauteur-1,largeur) (= la valeur du dessus).
+                                // S'il y a une frontière à l'EST mais pas de frontière au NORD alors
+                                // la valeur hauteur,largeur de la carte prend la valeur en (hauteur-1,largeur) (= la valeur du dessus).
                                 if (!frontiereNord && !valeurTempo)
                                     carteClair[hauteur, largeur] = carteClair[hauteur - 1, largeur];
                                 else 
-                                    //Sinon elle prend la variable valeurEnAttente
-                                    carteClair[hauteur, largeur] = valeurEnAttente;
+                                    //Sinon elle prend la variable lettreEnAttente
+                                    carteClair[hauteur, largeur] = lettreEnAttente;
 
-                                //On écrit le caractère qu'il faut sur les coordonnées que l'on a ajouté dans la liste charAEcrire auparavant (s'il y en a).
+                                // On écrit le caractère qu'il faut sur les coordonnées que l'on a ajouté dans
+                                // la liste charAEcrire auparavant (s'il y en a).
                                 if (charAEcrire.Count != 0)
                                 {
                                     foreach (string caractere in charAEcrire)
                                     {
-                                        //On récupère le hauteur du string "hauteur:largeur".
+                                        // On récupère le hauteur du string "hauteur:largeur".
                                         int valHauteur = Convert.ToInt32(caractere.Remove(caractere.IndexOf(":")));
-                                        //On récupère le largeur du string "hauteur:largeur".
+                                        // On récupère le largeur du string "hauteur:largeur".
                                         int valLargeur = Convert.ToInt32(caractere.Substring(caractere.LastIndexOf(":") + 1));
 
-                                        carteClair[valHauteur, valLargeur] = valeurEnAttente;
+                                        carteClair[valHauteur, valLargeur] = lettreEnAttente;
                                     }
                                 }
 
-                                //On incrémente le char dans le cas où il n'y a pas de frontière au Nord et qu'il est pas relié a un morceau de parcelle au dessus (!valeurTempo)
+                                // On incrémente le char dans le cas où il n'y a pas de frontière au Nord et
+                                // qu'il est pas relié a un morceau de parcelle au dessus (!valeurTempo)
                                 if (!valeurTempo && frontiereNord)
                                     lettreParcelle++;
 
                                 charAEcrire.Clear();
                                 valeurTempo = false;
-                                valeurEnAttente = lettreParcelle;
+                                lettreEnAttente = lettreParcelle;
                             }
                         }
-                        else //S'il n'y a pas de frontière(s), la valeur en (hauteur,largeur) est forcément en dessous de la valeur qu'il lui faudra (hauteur-1,largeur)
+                        else // S'il n'y a pas de frontière(s), la valeur en (hauteur,largeur)
+                             // est forcément en dessous de la valeur qu'il lui faudra (hauteur-1,largeur)
                         {
                             carteClair[hauteur, largeur] = carteClair[hauteur - 1, largeur];
                         }
@@ -178,11 +188,9 @@ namespace PROJET_CSHARP
                     }
                 }
             }
-            InitParcelle();
+            InitParcelle(); // Pour préajouter les coordonées des parcelles en fonction des caractères
         }
-        #endregion
 
-        #region Méthode
         /// <summary>
         /// Permet d'afficher dans la carte dans la console
         /// </summary>
@@ -206,9 +214,7 @@ namespace PROJET_CSHARP
             Console.WriteLine(" ");
             Console.ForegroundColor = ConsoleColor.White;
         }
-        #endregion
 
-        #region Méthode
         /// <summary>
         /// Permet d'initialiser en mémoire le dictionnaire de données qui va sauvegarder l'ensemble des coordonnées pour chaques type de parcelles
         /// </summary>
@@ -231,9 +237,7 @@ namespace PROJET_CSHARP
                 }
             }
         }
-        #endregion
 
-        #region Méthode
         /// <summary>
         /// Permet d'afficher le nombre parcelles ainsi que leurs coordonnées en fonction de leurs caractères
         /// </summary>
@@ -252,9 +256,7 @@ namespace PROJET_CSHARP
                 Console.WriteLine(" ");
             }
         }
-        #endregion
 
-        #region Méthode
         /// <summary>
         /// Affiche la taille d'une parcelle en fonction du caractère demandé
         /// </summary>
@@ -273,9 +275,7 @@ namespace PROJET_CSHARP
             }
             Console.WriteLine(" ");
         }
-        #endregion
 
-        #region Méthode
         /// <summary>
         /// Affiche toutes les parcelles qui ont une aire supérieure à nb
         /// </summary>
@@ -292,9 +292,7 @@ namespace PROJET_CSHARP
             }
             Console.WriteLine(" ");
         }
-        #endregion
 
-        #region Méthode
         /// <summary>
         /// Permets d'afficher l'aire moyenne de toutes les parcelles de la carte
         /// </summary>
@@ -314,6 +312,6 @@ namespace PROJET_CSHARP
             Console.WriteLine("Aire moyenne: {0:0.00}", aire);
             Console.WriteLine(" ");
         }
-        #endregion
     }
+    #endregion
 }
