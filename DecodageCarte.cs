@@ -70,7 +70,7 @@ namespace PROJET_CSHARP
         }
         #endregion
 
-        #region Méthode
+        #region Méthodes
         /// <summary>
         /// Décode la carte et retient en mémoire la carte clair
         /// </summary>
