@@ -27,10 +27,10 @@ namespace PROJET_CSHARP
                 string str;
                 while ((str = file.ReadLine()) != null)
                 {
-                    //Pour chaques caractéres dans le string
+                    //Pour chaques caractères dans le string
                     foreach (char c in str)
                     {
-                        //On ajoute le caractére dans le tableau
+                        //On ajoute le caractère dans le tableau
                         carteCopy[x, y] = c;
                         y++;
                     }
@@ -108,7 +108,7 @@ namespace PROJET_CSHARP
         {
             try
             {
-                //Chemin du dossier sans la nom du fichier
+                //Chemin du dossier sans le nom du fichier
                 string pathDossier = fichierPath.Remove(fichierPath.LastIndexOf("/") + 1);
                 //Nom du fichier avec l'extension .clair
                 string nomFichier = Path.GetFileName(fichierPath);

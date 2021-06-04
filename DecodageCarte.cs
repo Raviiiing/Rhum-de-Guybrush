@@ -42,7 +42,7 @@ namespace PROJET_CSHARP
                 StreamReader file = new StreamReader(cheminAcces);
                 while ((str = file.ReadLine()) != null)
                 {
-                    // On ajoute chaques lignes dans un tableau de lignes avec un split sur le char '|'
+                    // On ajoute chaques ligne dans un tableau de string avec un split sur le char '|'
                     // Le StringSplitOptions.RemoveEmptyEntries permet de supprimer les espaces vides laissé par le split du char '|'
                     string[] tableauLigne = str.Split('|', StringSplitOptions.RemoveEmptyEntries);
                     foreach (string ligne in tableauLigne)
@@ -84,11 +84,11 @@ namespace PROJET_CSHARP
             bool valeurTempo = false;
             List<string> charAEcrire = new List<string>();
 
-            for (int hauteur = 0; hauteur < 10; hauteur++)      // Boucle qui parcours une carte chiffre
+            for (int hauteur = 0; hauteur < 10; hauteur++)      // Boucle qui parcours une carte chiffrée
             {                                                   // puis décode cette carte pour  
                 for (int largeur = 0; largeur < 10; largeur++)  // écrire une carte clair
                 {
-                    if (carteDecodeCopy[hauteur, largeur] >= 0 && carteDecodeCopy[hauteur, largeur] <= 15) // Terrain
+                    if (carteDecodeCopy[hauteur, largeur] >= 0 && carteDecodeCopy[hauteur, largeur] <= 15) // Si la parcelle est du Terrain
                     {
                         valeur = carteDecodeCopy[hauteur, largeur]; //On copie la valeur de l'unité dans la variable valeur
                         List<int> calculePuissance = new List<int>(); // Garde en mémoire les puissances (0/1/2/3) de 2 de chaque unité
@@ -126,7 +126,7 @@ namespace PROJET_CSHARP
 
                             if (!frontiereEst) // S'il n'y a pas de frontières à l'EST.
                             {
-                                // On ajoute les coordonnées des caractères qui seront à écrirent
+                                // On ajoute les coordonnées des caractères qui seront à écrire
                                 // jusqu'à ce qu'il y ait une frontière à l'EST dans la List<string> charAEcrire
                                 // sous forme de string "hauteur:largeur".
                                 charAEcrire.Add(hauteur + ":" + largeur); 
@@ -163,7 +163,7 @@ namespace PROJET_CSHARP
                                 }
 
                                 // On incrémente le char dans le cas où il n'y a pas de frontière au Nord et
-                                // qu'il est pas relié a un morceau de parcelle au dessus (!valeurTempo)
+                                // qu'il n'est pas relié a un morceau de parcelle au dessus (!valeurTempo)
                                 if (!valeurTempo && frontiereNord)
                                     lettreParcelle++;
 
@@ -178,11 +178,11 @@ namespace PROJET_CSHARP
                             carteClair[hauteur, largeur] = carteClair[hauteur - 1, largeur];
                         }
                     }
-                    else if (carteDecodeCopy[hauteur, largeur] >= 32 && carteDecodeCopy[hauteur, largeur] <= 47) // Forêt
+                    else if (carteDecodeCopy[hauteur, largeur] >= 32 && carteDecodeCopy[hauteur, largeur] <= 47) // Si la parcelle est de la Forêt
                     {
                         carteClair[hauteur, largeur] = 'F';
                     }
-                    else if (carteDecodeCopy[hauteur, largeur] >= 64 && carteDecodeCopy[hauteur, largeur] <= 79) // Mer
+                    else if (carteDecodeCopy[hauteur, largeur] >= 64 && carteDecodeCopy[hauteur, largeur] <= 79) // Si la parcelle est de la Mer
                     {
                         carteClair[hauteur, largeur] = 'M';
                     }
@@ -192,7 +192,7 @@ namespace PROJET_CSHARP
         }
 
         /// <summary>
-        /// Permet d'afficher dans la carte dans la console
+        /// Permet d'afficher la carte dans la console
         /// </summary>
         public void Affiche()
         {
@@ -200,7 +200,7 @@ namespace PROJET_CSHARP
             {
                 for (int y = 0; y < 10; y++)
                 {
-                    //On affiche les caractéres en fonction du type avec une couleure qui lui est propre
+                    //On affiche les caractères en fonction du type avec une couleur qui lui est propre
                     if (carteClair[x, y] == 'M')
                         Console.ForegroundColor = ConsoleColor.Blue;
                     else if (carteClair[x, y] == 'F')
@@ -225,10 +225,10 @@ namespace PROJET_CSHARP
             {
                 for (y = 0; y < 10; y++)
                 {
-                    //Si on a un caractére autre que Mer ou Forêt
+                    //Si on a un caractère autre que Mer ou Forêt
                     if (carteClair[x, y] != 'F' && carteClair[x, y] != 'M')
                     {
-                        //Si le caractére n'existe pas dans le dictionnaire de donnée on l'ajoute puis on lui créer une Liste de coordonnée
+                        //Si le caractère n'existe pas dans le dictionnaire de donnée on l'ajoute puis on lui créer une Liste de coordonnée
                         if (!parcelle.ContainsKey(carteClair[x, y]))
                             parcelle.Add(carteClair[x, y], new List<string>());
                         //On ajoute la coordonnée de l'unité dans la liste qui correspond à son caractére.
@@ -277,7 +277,7 @@ namespace PROJET_CSHARP
         }
 
         /// <summary>
-        /// Affiche toutes les parcelles qui ont une aire supérieure à nb
+        /// Affiche toutes les parcelles qui ont une aire supérieure à la taille demandée nb
         /// </summary>
         /// <param name="nb">Corresponds à l'aire demandée</param>
         public void TailleSupp(int nb)
@@ -306,8 +306,8 @@ namespace PROJET_CSHARP
                 total = total + coordonne.Count; // Compte le nombre de coordonne dans la parcelle
                 nbParcelle = nbParcelle + 1; // On incrémente le nombre de parcelle
             }
-            //Une fois qu'on a compter le nombre de coordonne total 
-            double aire = (Double)total / nbParcelle; // On divise le nombre de coordonne total par le nombre de parcelle
+            //Une fois qu'on a compté le nombre de coordonnées total 
+            double aire = (Double)total / nbParcelle; // On divise le nombre de coordonnées total par le nombre de parcelle
 
             Console.WriteLine("Aire moyenne: {0:0.00}", aire);
             Console.WriteLine(" ");
